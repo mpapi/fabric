@@ -170,12 +170,12 @@ def sed(filename, before, after, limit='', use_sudo=False, backup='.bak',
         tmp = "/tmp/%s" % hasher.hexdigest()
         # Use temp file to work around lack of -i
         expr = r"""cp -p %(filename)s %(tmp)s \
-&& sed -r -e '%(limit)ss/%(before)s/%(after)s/%(flags)sg' %(filename)s > %(tmp)s \
+&& sed -r -e $'%(limit)ss/%(before)s/%(after)s/%(flags)sg' %(filename)s > %(tmp)s \
 && cp -p %(filename)s %(filename)s%(backup)s \
 && mv %(tmp)s %(filename)s"""
         command = expr % locals()
     else:
-        expr = r"sed -i%s -r -e '%ss/%s/%s/%sg' %s"
+        expr = r"sed -i%s -r -e $'%ss/%s/%s/%sg' %s"
         command = expr % (backup, limit, before, after, flags, filename)
     return func(command, shell=False)
 
